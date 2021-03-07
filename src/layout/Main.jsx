@@ -1,45 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Movies } from '../components/Movies';
 import { Preloader } from '../components/Preloader';
 import { Search } from '../components/Search';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
-class Main extends React.Component {
-    state = {
-        movies: [],
-        loading: true,
-    };
+function Main() {
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    componentDidMount() {
-        fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=cube`)
-            .then((response) => response.json())
-            .then((data) =>
-                this.setState({ movies: data.Search, loading: false })
-            );
-    }
-
-    searchMovies = (str, type = 'all') => {
-        this.setState({ loading: true });
+    const searchMovies = (str, type = 'all') => {
+        setLoading(false);
         fetch(
-            `http://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=${str}${
+            `https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=${str}${
                 type !== 'all' ? `&type=${type}` : ''
             }`
         )
             .then((response) => response.json())
-            .then((data) =>
-                this.setState({ movies: data.Search, loading: false })
-            );
+            .then((data) =>{
+                setLoading(false);
+                setMovies(data.Search);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
     };
+
+    useEffect(() => {
+        fetch(`https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=cube`)
+            .then((response) => response.json())
+            .then((data) =>{
+                setMovies(data.Search);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    }, []);
+
     // if loading == true we see Preloader another we see all cards from API
-    render() {
-        const { movies, loading } = this.state;
-        return (
-            <main className="container content">
-                <Search searchMovies={this.searchMovies} />
-                {loading ? <Preloader /> : <Movies movies={movies} />}
-            </main>
-        );
-    }
+    return (
+        <main className="container content">
+            <Search searchMovies={searchMovies} />
+            {loading ? <Preloader /> : <Movies movies={movies} />}
+        </main>
+    );
 }
 
 export { Main };
