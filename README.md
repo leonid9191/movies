@@ -1,3 +1,3 @@
-Project on React.
+# Movie-React-app.
 
-I study here API and libary React.
+Catalog with movies
