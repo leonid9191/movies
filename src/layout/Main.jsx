@@ -3,7 +3,7 @@ import { Movies } from '../components/Movies';
 import { Preloader } from '../components/Preloader';
 import { Search } from '../components/Search';
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+const API_KEY = '755ceb25';
 function Main() {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ function Main() {
     };
 
     useEffect(() => {
-        fetch(`https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=cube`)
+        fetch(`https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=all`)
             .then((response) => response.json())
             .then((data) =>{
                 setMovies(data.Search);
