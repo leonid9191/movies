@@ -1,3 +1,3 @@
-# Movie-React-app.
+# Movies-React-app.
 
-Catalog with movies
+Catalog with movies 
